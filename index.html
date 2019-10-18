@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>three.js webgl - OBJLoader + MTLLoader</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <style>
+      body {
+        font-family: Monospace;
+        background-color: #000;
+        color: #fff;
+        margin: 0px;
+        overflow: hidden;
+      }
+      #info {
+        color: #fff;
+        position: absolute;
+        top: 10px;
+        width: 100%;
+        text-align: center;
+        z-index: 100;
+        display: block;
+      }
+      #info a,
+      .button {
+        color: #f00;
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 id="info">正在加载中....</h1>
+    <script src="build/three.min.js"></script>
+
+    <script src="js/loaders/MTLLoader.js"></script>
+    <script src="js/loaders/OBJLoader.js"></script>
+    <script src="js/controls/OrbitControls.js"></script>
+
+    <script src="js/libs/stats.min.js"></script>
+
+    <script src="js/postprocessing/EffectComposer.js"></script>
+    <script src="js/postprocessing/RenderPass.js"></script>
+    <script src="js/postprocessing/ShaderPass.js"></script>
+    <script src="js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="js/shaders/CopyShader.js"></script>
+    <script src="js/shaders/LuminosityHighPassShader.js"></script>
+
+    <script src="js/libs/dat.gui.min.js"></script>
+
+    <script>
+      // demo版本 代码比较乱 见谅
+      var container, stats;
+
+      var camera, scene, renderer;
+
+      var composer;
+
+      var params = {
+        exposure: 1,
+        bloomStrength: 1.9,
+        bloomThreshold: 0.3,
+        bloomRadius: 0,
+        light: 0.1
+      };
+
+      var group = new THREE.Object3D();
+
+      var $info = document.getElementById("info");
+
+      init();
+      animate();
+
+      function init() {
+        container = document.createElement("div");
+
+        stats = new Stats();
+        container.appendChild(stats.dom);
+
+        camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          1,
+          1000
+        );
+        camera.position.z = 10;
+        camera.position.x = 50;
+        camera.position.y = 10;
+
+        // scene
+        scene = new THREE.Scene();
+
+        var skymap = new THREE.TextureLoader().load("textures/sky.jpg");
+        scene.background = skymap;
+
+        scene.add(new THREE.AmbientLight(0x404040));
+
+        pointLight = new THREE.PointLight(0xffffff, 0.3);
+        camera.add(pointLight);
+        scene.add(camera);
+
+        scene.add(group);
+
+        renderer = new THREE.WebGLRenderer({ antialias: false });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+        container.appendChild(renderer.domElement);
+        document.body.appendChild(container);
+
+        var renderScene = new THREE.RenderPass(scene, camera);
+
+        var bloomPass = new THREE.UnrealBloomPass(
+          new THREE.Vector2(window.innerWidth, window.innerHeight),
+          1.5,
+          0.4,
+          0.85
+        );
+        bloomPass.renderToScreen = true;
+        bloomPass.threshold = params.bloomThreshold;
+        bloomPass.strength = params.bloomStrength;
+        bloomPass.radius = params.bloomRadius;
+
+        composer = new THREE.EffectComposer(renderer);
+        composer.setSize(window.innerWidth, window.innerHeight);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        // 初始化 gui
+        (function() {
+          var gui = new dat.GUI();
+
+          gui.add(params, "exposure", 0.1, 2.0).onChange(function(value) {
+            renderer.toneMappingExposure = Math.pow(value, 4.0);
+          });
+
+          gui.add(params, "bloomThreshold", 0.0, 1.0).onChange(function(value) {
+            bloomPass.threshold = Number(value);
+          });
+
+          gui.add(params, "bloomStrength", 0.0, 20.0).onChange(function(value) {
+            bloomPass.strength = Number(value);
+          });
+          gui.add(params, "light", 0.0, 1.0).onChange(function(value) {
+            bloomPass.light = Number(value);
+          });
+
+          gui
+            .add(params, "bloomRadius", 0.0, 1.0)
+            .step(0.01)
+            .onChange(function(value) {
+              bloomPass.radius = Number(value);
+            });
+        })();
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        stats.update();
+        composer.render();
+      }
+
+      // 加载城市模型
+      (function() {
+        // 创建材质贴图
+        function createCubeMap() {
+          return new THREE.CubeTextureLoader()
+            .setPath("textures/")
+            .load(new Array(6).fill("start.jpg"));
+        }
+
+        function onProgress(xhr) {
+          xhr.loaded >= 60000 && ($info.innerText = "");
+        }
+
+        function onError(error) {
+          console.log(error);
+        }
+
+        new THREE.MTLLoader()
+          .setPath("models/obj/city_test/")
+          .load("city.mtl", function(materials) {
+            // console.log(materials);
+            materials.preload();
+
+            new THREE.OBJLoader()
+              .setMaterials(materials)
+              .setPath("models/obj/city_test/")
+              .load(
+                "city.obj",
+                function(object) {
+                  // console.log(object)
+                  object.traverse(function(child) {
+                    if (child.isMesh) {
+                      child.material.envMap = createCubeMap();
+                    }
+                  });
+
+                  group.add(object);
+                  group.position.set(-30, 0, -31);
+                },
+                onProgress,
+                onError
+              );
+          });
+      })();
+
+      // 加载精灵
+      (function() {
+        var textured = new THREE.TextureLoader().load("textures/warning.png");
+        var spriteMaterial = new THREE.SpriteMaterial({
+          // color: 0xffffff,
+          map: textured
+        });
+        var sprite = new THREE.Sprite(spriteMaterial);
+        sprite.position.set(
+          25.729931791092394,
+          10.179400757773436,
+          36.07142388020101
+        );
+        sprite.scale.x = 10;
+        sprite.scale.y = 5;
+        group.add(sprite);
+      })();
+
+      // 当window窗口变化
+      (function() {
+        window.addEventListener("resize", onWindowResize, false);
+        function onWindowResize() {
+          windowHalfX = window.innerWidth / 2;
+          windowHalfY = window.innerHeight / 2;
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          composer.setSize(window.innerWidth, window.innerHeight);
+        }
+      })();
+
+      // 点击模型
+      (function() {
+        var raycaster = new THREE.Raycaster();
+        var mouse = new THREE.Vector2();
+
+        window.addEventListener("click", onTouchMove);
+        window.addEventListener("touchstart", onTouchMove);
+
+        function onTouchMove(event) {
+          var x, y;
+
+          if (event.changedTouches) {
+            x = event.changedTouches[0].pageX;
+            y = event.changedTouches[0].pageY;
+          } else {
+            x = event.clientX;
+            y = event.clientY;
+          }
+
+          mouse.x = (x / window.innerWidth) * 2 - 1;
+          mouse.y = -(y / window.innerHeight) * 2 + 1;
+
+          checkIntersection();
+        }
+
+        function checkIntersection() {
+          raycaster.setFromCamera(mouse, camera);
+          var intersects = raycaster.intersectObjects([scene], true);
+          if (intersects.length > 0) {
+            var selectedObject = intersects[0].object;
+            var point = intersects[0].point;
+            var face = intersects[0].face;
+            console.log(intersects[0]);
+            if (
+              selectedObject.parent &&
+              selectedObject.parent.type === "Group"
+            ) {
+              const position = selectedObject.geometry.boundingSphere.center;
+            }
+          } else {
+            // outlinePass.selectedObjects = [];
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

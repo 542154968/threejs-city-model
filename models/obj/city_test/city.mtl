@@ -1,0 +1,122 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# �������ļ�:15.10.2019 10:23:00
+
+newmtl _Lumiandefault
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5880 0.5880 0.5880
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl _LumianinitialShadingGroup
+	Ns 30.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0500 0.0500 0.0500
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl _Citylambert2SG
+	Ns 30.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0500 5.1000 5.0000
+	Kd 0.0000 5.1000 5.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka edge_02_diffuse.jpg
+	map_Kd edge_02_diffuse.jpg
+	map_bump edge_02_diffuse.jpg
+	bump edge_02_diffuse.jpg
+
+newmtl _Citylou3SG
+	Ns 30.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 10.0000 10.0000
+	Kd 0.0000 10.0000 10.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka edge_03_diffuse.jpg
+	map_Kd edge_03_diffuse.jpg
+	map_bump edge_03_diffuse.jpg
+	bump edge_03_diffuse.jpg
+
+newmtl _Citylou4SG
+	Ns 30.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 5.0000 5.0000
+	Kd 0.0000 5.0000 5.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka edge_04_diffuse.jpg
+	map_Kd edge_04_diffuse.jpg
+	map_bump edge_02_diffuse.jpg
+	bump edge_02_diffuse.jpg
+
+newmtl _Citylou5SG
+	Ns 30.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 5.0000 5.0000
+	Kd 0.0000 5.0000 5.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka edge_05_diffuse.jpg
+	map_Kd edge_05_diffuse.jpg
+	map_bump edge_02_diffuse.jpg
+	bump edge_02_diffuse.jpg
+
+newmtl _Citylou6SG
+	Ns 30.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 10.0000 10.0000
+	Kd 0.0000 10.0000 10.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka edge_06_diffuse.jpg
+	map_Kd edge_06_diffuse.jpg
+	map_bump edge_02_diffuse.jpg
+	bump edge_02_diffuse.jpg
+
+newmtl _Citylou7SG
+	Ns 30.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 5.0000 5.0000
+	Kd 0.0000 5.0000 5.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka edge_07_diffuse.jpg
+	map_Kd edge_07_diffuse.jpg
+	map_bump edge_02_diffuse.jpg
+	bump edge_02_diffuse.jpg
