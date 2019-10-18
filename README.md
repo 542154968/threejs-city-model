@@ -16,9 +16,9 @@ threejs如何调整还没想到
 
 ---------------------------------------------- yeah ----------------------------------------------
 
-[效果图 1](https://github.com/542154968/threejs-city-model/blob/master/images/city1.png)
+![效果图 1](https://github.com/542154968/threejs-city-model/blob/master/images/city1.png)
 
-[效果图 2](https://github.com/542154968/threejs-city-model/blob/master/images/city2.png)
+![效果图 2](https://github.com/542154968/threejs-city-model/blob/master/images/city2.png)
 
 
 https://www.hsrj.group/city/index.html 在线访问 服务器比较慢 贴图加载慢 见谅
