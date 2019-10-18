@@ -132,7 +132,7 @@
         composer.addPass(renderScene);
         composer.addPass(bloomPass);
 
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
         // 初始化 gui
         (function() {
@@ -281,7 +281,7 @@
               selectedObject.parent &&
               selectedObject.parent.type === "Group"
             ) {
-              const position = selectedObject.geometry.boundingSphere.center;
+              var position = selectedObject.geometry.boundingSphere.center;
             }
           } else {
             // outlinePass.selectedObjects = [];
