@@ -27,3 +27,7 @@
 ![效果图 2](https://github.com/542154968/threejs-city-model/blob/master/images/city2.png)
 
 https://www.hsrj.group/city/index.html 在线访问 服务器比较慢 贴图加载慢 见谅
+
+
+！！！！！！
+详细思路可以看 我写的这个文章 https://blog.csdn.net/qq_37540004/article/details/102862348
